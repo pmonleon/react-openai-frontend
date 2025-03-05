@@ -26,6 +26,7 @@ export const TextMessageBoxSelect = ({ onSendMessage, placeholder, disableCorrec
     event.preventDefault();
 
     if ( message.trim().length === 0 ) return;
+    if ( selectedOption === '' ) return;
 
     onSendMessage( message, selectedOption );
     setMessage('');
@@ -47,16 +48,15 @@ export const TextMessageBoxSelect = ({ onSendMessage, placeholder, disableCorrec
             className="w-full border rounded-xl text-gray-800 focus:outline-none focus:border-indigo-300 pl-4 h-10"
             placeholder={ placeholder }
             autoComplete={ disableCorrections ? 'off': 'on' }
-            autoCorrect={ disableCorrections ? 'on': 'off' }
+            autoCorrect={ disableCorrections ? 'off': 'on' }
             spellCheck={ disableCorrections ? 'true': 'false' }
             value={ message }
             onChange={ (e) => setMessage( e.target.value ) }
           />
 
-          <label htmlFor="message-select" className="sr-only">Select an option</label>
           <select 
-            id="message-select"
             name="select"
+            aria-label="Select an option"
             className="w-2/5 ml-5 border rounded-xl text-gray-800 focus:outline-none focus:border-indigo-300 pl-4 h-10"
             value={ selectedOption }
             onChange={ e => setSelectedOption( e.target.value ) }
@@ -75,7 +75,7 @@ export const TextMessageBoxSelect = ({ onSendMessage, placeholder, disableCorrec
 
 
       <div className="ml-4">
-          <button title='send message' type='submit' className="btn-primary">
+          <button className="btn-primary">
             <span className="mr-2">Enviar</span>
             <i className="fa-regular fa-paper-plane"></i>
           </button>
