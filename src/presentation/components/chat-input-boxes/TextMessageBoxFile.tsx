@@ -2,7 +2,7 @@ import { FormEvent, useRef, useState } from 'react';
 
 
 interface Props {
-  onSendMessage: (message: string)=>void;
+  onSendMessage: (message: string, file: File )=>void;
   placeholder?: string;
   disableCorrections?: boolean;
   accept?: string; // image/*
@@ -23,24 +23,25 @@ export const TextMessageBoxFile = ({ onSendMessage, placeholder, disableCorrecti
   const handleSendMessage = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if ( message.trim().length === 0 ) return;
+    // if ( message.trim().length === 0 ) return;
+    if ( !selectedFile ) return;
 
-    onSendMessage( message );
+    onSendMessage( message, selectedFile );
     setMessage('');
+    setSelectedFile(null);
   }
 
   return (
     <form
       onSubmit={ handleSendMessage }
       className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4"
-      title="Attach file"
     >
       <div className="mr-3">
         <button
-          title="Attach file"
           type="button"
           className="flex items-center justify-center text-gray-400 hover:text-gray-600"
           onClick={ () => inputFileRef.current?.click() }
+          title="Attach a file"
         >
             <i className="fa-solid fa-paperclip text-xl"></i>
         </button>
@@ -80,8 +81,6 @@ export const TextMessageBoxFile = ({ onSendMessage, placeholder, disableCorrecti
 
       <div className="ml-4">
           <button 
-            title="send message"
-            type='submit'
             className="btn-primary"
             disabled={ !selectedFile }
           >
